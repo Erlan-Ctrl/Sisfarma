@@ -167,7 +167,6 @@
                         <nav class="sidebar__nav">
                             @foreach ($navItems as $item)
                                 <a
-                                    title="{{ $item['label'] }}"
                                     aria-label="{{ $item['label'] }}"
                                     class="sidebar__link group mb-1 flex items-center justify-between rounded-2xl px-3 py-2.5 transition duration-200 ease-out motion-safe:hover:translate-x-0.5
                                         {{ $item['active'] ? 'bg-white/10 text-white ring-1 ring-white/10' : 'text-brand-100/90 hover:bg-white/10 hover:text-white' }}"
@@ -187,7 +186,7 @@
                             @endforeach
 
                             @if (Route::has('admin.assistant') && in_array($userRole, ['admin', 'gerente'], true))
-                                <a title="Assistente IA" aria-label="Assistente IA" class="sidebar__link group mb-1 flex items-center justify-between rounded-2xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.assistant*') ? 'bg-white/10 text-white ring-1 ring-white/10' : '' }}" href="{{ route('admin.assistant') }}">
+                                <a aria-label="Assistente IA" class="sidebar__link group mb-1 flex items-center justify-between rounded-2xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.assistant*') ? 'bg-white/10 text-white ring-1 ring-white/10' : '' }}" href="{{ route('admin.assistant') }}">
                                     <span class="sidebar__content flex min-w-0 items-center gap-3">
                                         <span class="sidebar__icon grid h-9 w-9 place-items-center rounded-xl bg-white/5 ring-1 ring-white/10 text-white/90 transition group-hover:bg-white/10">
                                             <x-nav-icon name="assistant" class="h-5 w-5" />
@@ -198,7 +197,7 @@
                             @endif
 
                             @if (Route::has('admin.knowledge.index') && in_array($userRole, ['admin', 'gerente'], true))
-                                <a title="Conhecimento" aria-label="Conhecimento" class="sidebar__link group mb-1 flex items-center justify-between rounded-2xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.knowledge.*') ? 'bg-white/10 text-white ring-1 ring-white/10' : '' }}" href="{{ route('admin.knowledge.index') }}">
+                                <a aria-label="Conhecimento" class="sidebar__link group mb-1 flex items-center justify-between rounded-2xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.knowledge.*') ? 'bg-white/10 text-white ring-1 ring-white/10' : '' }}" href="{{ route('admin.knowledge.index') }}">
                                     <span class="sidebar__content flex min-w-0 items-center gap-3">
                                         <span class="sidebar__icon grid h-9 w-9 place-items-center rounded-xl bg-white/5 ring-1 ring-white/10 text-white/90 transition group-hover:bg-white/10">
                                             <x-nav-icon name="knowledge" class="h-5 w-5" />
