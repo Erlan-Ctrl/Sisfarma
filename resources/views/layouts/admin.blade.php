@@ -147,15 +147,6 @@
                         </a>
                     @endforeach
 
-                    @if (Route::has('admin.scanner'))
-                        <div class="mt-4 border-t border-white/10 pt-4">
-                            <a class="mb-1 flex items-center justify-between rounded-xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.scanner*') ? 'bg-white/10 text-white' : '' }}" href="{{ route('admin.scanner') }}">
-                                <span class="font-semibold">Scanner</span>
-                                <span class="rounded-full bg-sun-500/20 px-2 py-0.5 text-[11px] font-semibold text-sun-100">EAN</span>
-                            </a>
-                        </div>
-                    @endif
-
                     @if (Route::has('admin.assistant') && in_array($userRole, ['admin', 'gerente'], true))
                         <a class="mb-1 flex items-center justify-between rounded-xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.assistant*') ? 'bg-white/10 text-white' : '' }}" href="{{ route('admin.assistant') }}">
                             <span class="font-semibold">Assistente IA</span>
@@ -220,21 +211,110 @@
                         @endif
 
                         <div class="flex items-center gap-2">
-                            @if (Route::has('admin.scanner'))
-                                <a class="hidden h-10 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm hover:bg-slate-50 md:inline-flex items-center justify-center" href="{{ route('admin.scanner') }}">
-                                    Scanner
-                                </a>
-                            @endif
-
                             @auth
-                                <div class="hidden items-center gap-2 md:flex">
-                                    <span class="inline-flex h-10 items-center text-sm font-semibold text-slate-700">{{ auth()->user()->name }}</span>
-                                    <form action="{{ route('admin.logout') }}" method="post">
-                                        @csrf
-                                        <button class="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm hover:bg-slate-50" type="submit">
-                                            Sair
+                                <div class="flex items-center gap-2">
+                                    @php
+                                        $user = auth()->user();
+                                        $userName = trim((string) ($user?->name ?? ''));
+                                        $parts = preg_split('/\\s+/', $userName) ?: [];
+                                        $initials = '';
+                                        foreach (array_slice($parts, 0, 2) as $p) {
+                                            $p = trim((string) $p);
+                                            if ($p === '') {
+                                                continue;
+                                            }
+                                            $initials .= mb_strtoupper(mb_substr($p, 0, 1));
+                                        }
+                                        if ($initials === '') {
+                                            $initials = 'U';
+                                        }
+
+                                        $roleLabel = match ((string) ($userRole ?? '')) {
+                                            'admin' => 'Admin',
+                                            'gerente' => 'Gerente',
+                                            'atendente' => 'Atendente',
+                                            'caixa' => 'Caixa',
+                                            default => 'Usuário',
+                                        };
+                                    @endphp
+
+                                    <div class="relative z-30" data-user-menu="1">
+                                        <button
+                                            class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-100"
+                                            type="button"
+                                            data-user-menu-toggle="1"
+                                            aria-haspopup="menu"
+                                            aria-expanded="false"
+                                            aria-controls="user-menu-panel"
+                                        >
+                                            <span class="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-brand-700 to-sun-500 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/50">
+                                                {{ $initials }}
+                                            </span>
+                                            <span class="hidden max-w-[10rem] truncate text-sm font-semibold text-slate-800 sm:inline">{{ $userName !== '' ? $userName : 'Usuário' }}</span>
+                                            <span class="hidden rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600 md:inline-flex">
+                                                {{ $roleLabel }}
+                                            </span>
+                                            <svg class="h-4 w-4 text-slate-500 transition" data-user-menu-chevron="1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 011.08 1.04l-4.24 4.5a.75.75 0 01-1.08 0l-4.24-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                            </svg>
                                         </button>
-                                    </form>
+
+                                        <div
+                                            id="user-menu-panel"
+                                            class="absolute right-0 top-full mt-2 w-72 origin-top-right rounded-2xl border border-slate-200 bg-white p-2 shadow-lg shadow-slate-200/60 transition duration-150 ease-out opacity-0 scale-95"
+                                            role="menu"
+                                            aria-label="Menu do usuário"
+                                            data-user-menu-panel="1"
+                                            hidden
+                                        >
+                                            <div class="flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-3">
+                                                <span class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-brand-700 to-sun-500 text-sm font-extrabold text-white shadow-sm ring-1 ring-white/50">
+                                                    {{ $initials }}
+                                                </span>
+                                                <div class="min-w-0">
+                                                    <div class="truncate text-sm font-semibold text-slate-900">{{ $userName !== '' ? $userName : 'Usuário' }}</div>
+                                                    <div class="truncate text-xs text-slate-500">{{ (string) ($user?->email ?? '') }}</div>
+                                                </div>
+                                                <span class="ml-auto rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200">
+                                                    {{ $roleLabel }}
+                                                </span>
+                                            </div>
+
+                                            <div class="mt-2 grid gap-1">
+                                                @if (Route::has('admin.scanner'))
+                                                    <a class="flex items-center justify-between rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="{{ route('admin.scanner') }}" role="menuitem">
+                                                        <span>Scanner</span>
+                                                        <span class="rounded-full bg-sun-500/10 px-2 py-0.5 text-[11px] font-semibold text-sun-700">EAN</span>
+                                                    </a>
+                                                @endif
+
+                                                @if (Route::has('admin.assistant') && in_array($userRole, ['admin', 'gerente'], true))
+                                                    <a class="flex items-center justify-between rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="{{ route('admin.assistant') }}" role="menuitem">
+                                                        <span>Assistente IA</span>
+                                                    </a>
+                                                @endif
+
+                                                @if (Route::has('admin.knowledge.index') && in_array($userRole, ['admin', 'gerente'], true))
+                                                    <a class="flex items-center justify-between rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="{{ route('admin.knowledge.index') }}" role="menuitem">
+                                                        <span>Conhecimento</span>
+                                                    </a>
+                                                @endif
+
+                                                <div class="my-1 border-t border-slate-200"></div>
+
+                                                <form action="{{ route('admin.logout') }}" method="post">
+                                                    @csrf
+                                                    <button class="flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50" type="submit" role="menuitem">
+                                                        <span>Sair</span>
+                                                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd" d="M3 4.75A1.75 1.75 0 014.75 3h6.5A1.75 1.75 0 0113 4.75v1.5a.75.75 0 01-1.5 0v-1.5a.25.25 0 00-.25-.25h-6.5a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h6.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 0111.25 17h-6.5A1.75 1.75 0 013 15.25V4.75z" clip-rule="evenodd" />
+                                                            <path fill-rule="evenodd" d="M13.72 10.53a.75.75 0 010-1.06l1.47-1.47H8.75a.75.75 0 010-1.5h6.44l-1.47-1.47a.75.75 0 111.06-1.06l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 01-1.06 0z" clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endauth
                         </div>
