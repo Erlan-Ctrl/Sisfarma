@@ -36,78 +36,91 @@
                     'label' => 'Painel',
                     'route' => 'admin.dashboard',
                     'active' => request()->routeIs('admin.dashboard'),
+                    'icon' => 'dashboard',
                 ],
                 [
                     'label' => 'Relatórios',
                     'route' => 'admin.reports.index',
                     'active' => request()->routeIs('admin.reports.*'),
                     'roles' => ['admin', 'gerente'],
+                    'icon' => 'reports',
                 ],
                 [
                     'label' => 'Produtos',
                     'route' => 'admin.products.index',
                     'active' => request()->routeIs('admin.products.*'),
                     'roles' => ['admin', 'gerente', 'atendente'],
+                    'icon' => 'products',
                 ],
                 [
                     'label' => 'Estoque',
                     'route' => 'admin.inventory.index',
                     'active' => request()->routeIs('admin.inventory.*'),
                     'roles' => ['admin', 'gerente', 'atendente'],
+                    'icon' => 'inventory',
                 ],
                 [
                     'label' => 'Compras',
                     'route' => 'admin.purchases.index',
                     'active' => request()->routeIs('admin.purchases.*'),
                     'roles' => ['admin', 'gerente'],
+                    'icon' => 'purchases',
                 ],
                 [
                     'label' => 'Vendas',
                     'route' => 'admin.sales.index',
                     'active' => request()->routeIs('admin.sales.*'),
                     'roles' => ['admin', 'gerente', 'atendente', 'caixa'],
+                    'icon' => 'sales',
                 ],
                 [
                     'label' => 'Transferências',
                     'route' => 'admin.transfers.index',
                     'active' => request()->routeIs('admin.transfers.*'),
                     'roles' => ['admin', 'gerente'],
+                    'icon' => 'transfers',
                 ],
                 [
                     'label' => 'Fornecedores',
                     'route' => 'admin.suppliers.index',
                     'active' => request()->routeIs('admin.suppliers.*'),
                     'roles' => ['admin', 'gerente'],
+                    'icon' => 'suppliers',
                 ],
                 [
                     'label' => 'Categorias',
                     'route' => 'admin.categories.index',
                     'active' => request()->routeIs('admin.categories.*'),
                     'roles' => ['admin', 'gerente'],
+                    'icon' => 'categories',
                 ],
                 [
                     'label' => 'Ofertas',
                     'route' => 'admin.offers.index',
                     'active' => request()->routeIs('admin.offers.*'),
                     'roles' => ['admin', 'gerente'],
+                    'icon' => 'offers',
                 ],
                 [
                     'label' => 'Lojas',
                     'route' => 'admin.stores.index',
                     'active' => request()->routeIs('admin.stores.*'),
                     'roles' => ['admin', 'gerente'],
+                    'icon' => 'stores',
                 ],
                 [
                     'label' => 'Usuários',
                     'route' => 'admin.users.index',
                     'active' => request()->routeIs('admin.users.*'),
                     'roles' => ['admin'],
+                    'icon' => 'users',
                 ],
                 [
                     'label' => 'Auditoria',
                     'route' => 'admin.audit.index',
                     'active' => request()->routeIs('admin.audit.*'),
                     'roles' => ['admin', 'gerente'],
+                    'icon' => 'audit',
                 ],
             ];
 
@@ -122,47 +135,69 @@
         @endphp
 
         <div class="relative flex min-h-screen">
-            <aside class="hidden w-72 flex-col border-r border-brand-800/60 bg-gradient-to-b from-brand-900 to-brand-800 text-brand-50 md:flex">
-                <div class="p-6">
-                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
-                        <span class="grid h-10 w-10 place-items-center rounded-2xl bg-sun-500 font-extrabold text-brand-900">SS</span>
-                        <div class="min-w-0">
-                            <p class="truncate text-sm font-semibold tracking-tight">{{ config('app.name', 'Sisfarma') }}</p>
-                            <p class="truncate text-xs text-brand-100/80">Painel interno</p>
-                        </div>
-                    </a>
-                </div>
+            <aside class="relative hidden h-screen w-72 shrink-0 flex-col border-r border-brand-800/60 bg-gradient-to-b from-brand-900 to-brand-800 text-brand-50 shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset] md:sticky md:top-0 md:flex overflow-hidden">
+                <div class="pointer-events-none absolute inset-0 opacity-[0.08] app-grid"></div>
 
-                <nav class="px-3 pb-6 text-sm">
-                    @foreach ($navItems as $item)
-                        <a
-                            class="mb-1 flex items-center justify-between rounded-xl px-3 py-2.5 transition duration-200 ease-out motion-safe:hover:translate-x-0.5
-                                {{ $item['active'] ? 'bg-white/10 text-white' : 'text-brand-100/90 hover:bg-white/10 hover:text-white' }}"
-                            href="{{ route($item['route']) }}"
-                        >
-                            <span class="font-semibold">{{ $item['label'] }}</span>
-                            @if ($item['active'])
-                                <span class="h-2 w-2 rounded-full bg-sun-400"></span>
+                <div class="relative flex h-full flex-col">
+                    <div class="p-6">
+                        <a href="{{ route('admin.dashboard') }}" class="group flex items-center gap-3">
+                            <span class="grid h-10 w-10 place-items-center rounded-2xl bg-sun-500 font-extrabold text-brand-900 shadow-sm transition group-hover:scale-[1.02]">SS</span>
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-semibold tracking-tight text-white">{{ config('app.name', 'Sisfarma') }}</p>
+                                <p class="truncate text-xs text-brand-100/80">Painel interno</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto px-3 pb-6 text-sm">
+                        <nav>
+                            @foreach ($navItems as $item)
+                                <a
+                                    class="group mb-1 flex items-center justify-between rounded-2xl px-3 py-2.5 transition duration-200 ease-out motion-safe:hover:translate-x-0.5
+                                        {{ $item['active'] ? 'bg-white/10 text-white ring-1 ring-white/10' : 'text-brand-100/90 hover:bg-white/10 hover:text-white' }}"
+                                    href="{{ route($item['route']) }}"
+                                >
+                                    <span class="flex min-w-0 items-center gap-3">
+                                        <span class="grid h-9 w-9 place-items-center rounded-xl bg-white/5 ring-1 ring-white/10 text-white/90 transition group-hover:bg-white/10">
+                                            <x-nav-icon :name="$item['icon'] ?? null" class="h-5 w-5" />
+                                        </span>
+                                        <span class="truncate font-semibold">{{ $item['label'] }}</span>
+                                    </span>
+
+                                    @if ($item['active'])
+                                        <span class="ml-3 h-2 w-2 rounded-full bg-sun-400 shadow-sm"></span>
+                                    @endif
+                                </a>
+                            @endforeach
+
+                            @if (Route::has('admin.assistant') && in_array($userRole, ['admin', 'gerente'], true))
+                                <a class="group mb-1 flex items-center justify-between rounded-2xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.assistant*') ? 'bg-white/10 text-white ring-1 ring-white/10' : '' }}" href="{{ route('admin.assistant') }}">
+                                    <span class="flex min-w-0 items-center gap-3">
+                                        <span class="grid h-9 w-9 place-items-center rounded-xl bg-white/5 ring-1 ring-white/10 text-white/90 transition group-hover:bg-white/10">
+                                            <x-nav-icon name="assistant" class="h-5 w-5" />
+                                        </span>
+                                        <span class="truncate font-semibold">Assistente IA</span>
+                                    </span>
+                                </a>
                             @endif
-                        </a>
-                    @endforeach
 
-                    @if (Route::has('admin.assistant') && in_array($userRole, ['admin', 'gerente'], true))
-                        <a class="mb-1 flex items-center justify-between rounded-xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.assistant*') ? 'bg-white/10 text-white' : '' }}" href="{{ route('admin.assistant') }}">
-                            <span class="font-semibold">Assistente IA</span>
-                        </a>
-                    @endif
+                            @if (Route::has('admin.knowledge.index') && in_array($userRole, ['admin', 'gerente'], true))
+                                <a class="group mb-1 flex items-center justify-between rounded-2xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.knowledge.*') ? 'bg-white/10 text-white ring-1 ring-white/10' : '' }}" href="{{ route('admin.knowledge.index') }}">
+                                    <span class="flex min-w-0 items-center gap-3">
+                                        <span class="grid h-9 w-9 place-items-center rounded-xl bg-white/5 ring-1 ring-white/10 text-white/90 transition group-hover:bg-white/10">
+                                            <x-nav-icon name="knowledge" class="h-5 w-5" />
+                                        </span>
+                                        <span class="truncate font-semibold">Conhecimento</span>
+                                    </span>
+                                </a>
+                            @endif
+                        </nav>
+                    </div>
 
-                    @if (Route::has('admin.knowledge.index') && in_array($userRole, ['admin', 'gerente'], true))
-                        <a class="mb-1 flex items-center justify-between rounded-xl px-3 py-2.5 text-brand-100/90 hover:bg-white/10 hover:text-white {{ request()->routeIs('admin.knowledge.*') ? 'bg-white/10 text-white' : '' }}" href="{{ route('admin.knowledge.index') }}">
-                            <span class="font-semibold">Conhecimento</span>
-                        </a>
-                    @endif
-                </nav>
-
-                <div class="mt-auto p-6 text-xs text-brand-100/80">
-                    <p class="font-semibold text-brand-50">Dica</p>
-                    <p class="mt-1">Use o Scanner para cadastrar/achar produtos rapidamente.</p>
+                    <div class="border-t border-white/10 p-6 text-xs text-brand-100/80">
+                        <p class="font-semibold text-brand-50">Dica</p>
+                        <p class="mt-1">Use o Scanner para cadastrar/achar produtos rapidamente.</p>
+                    </div>
                 </div>
             </aside>
 

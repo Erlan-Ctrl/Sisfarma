@@ -16,6 +16,8 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertRedirect(route('admin.register'));
+        $response->assertOk();
+        $response->assertSee('Recursos principais');
+        $response->assertSee(route('admin.register'));
     }
 }

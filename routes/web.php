@@ -36,13 +36,13 @@ use Illuminate\Support\Facades\Route;
 
 // Home: em ambiente interno, leva ao login (ou painel se já estiver autenticado).
 Route::get('/', function () {
-    if (! User::query()->exists()) {
-        return redirect()->route('admin.register');
+    if (auth()->check()) {
+        return redirect()->route('admin.dashboard');
     }
 
-    return auth()->check()
-        ? redirect()->route('admin.dashboard')
-        : redirect()->route('admin.login');
+    return view('site.landing', [
+        'hasUsers' => User::query()->exists(),
+    ]);
 })->name('home');
 
 // Para compatibilidade com o middleware "auth" do Laravel.
