@@ -45,6 +45,13 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Landing page (sempre acessível, inclusive quando autenticado).
+Route::get('/apresentacao', function () {
+    return view('site.landing', [
+        'hasUsers' => User::query()->exists(),
+    ]);
+})->name('site.landing');
+
 // Para compatibilidade com o middleware "auth" do Laravel.
 Route::get('/login', fn () => redirect()->route('admin.login'))->name('login');
 

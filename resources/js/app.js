@@ -5,12 +5,14 @@ import { initFlash } from './ui/flash';
 import { initHeaderProductSearchAutocomplete } from './ui/productSearchAutocomplete';
 import { initMotion } from './ui/motion';
 import { initUserMenuDropdown } from './ui/userMenuDropdown';
+import { initSidebarCollapse } from './ui/sidebarCollapse';
 
 function start() {
     initLineItemsForms();
     initFlash();
     initHeaderProductSearchAutocomplete();
     initUserMenuDropdown();
+    initSidebarCollapse();
     initMotion();
 }
 

@@ -14,7 +14,7 @@
 
     <header class="sticky top-0 z-20 border-b border-slate-200/70 bg-white/75 backdrop-blur">
         <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
-            <a class="flex items-center gap-3" href="{{ route('home') }}">
+            <a class="flex items-center gap-3" href="{{ route('site.landing') }}">
                 <span class="grid h-10 w-10 place-items-center rounded-2xl bg-brand-700 font-extrabold text-white shadow-sm">
                     SS
                 </span>
@@ -313,4 +313,3 @@
         </div>
     </footer>
 @endsection
-
