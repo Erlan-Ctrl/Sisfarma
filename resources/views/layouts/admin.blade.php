@@ -135,11 +135,11 @@
         @endphp
 
         <div class="relative flex min-h-screen">
-            <aside class="sidebar relative hidden h-screen w-72 shrink-0 flex-col border-r border-brand-800/60 bg-gradient-to-b from-brand-900 to-brand-800 text-brand-50 shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset] transition-[width] duration-200 ease-out md:sticky md:top-0 md:flex overflow-visible" data-sidebar="1" data-collapsed="0">
+            <aside class="sidebar relative z-20 hidden h-screen w-72 shrink-0 flex-col border-r border-brand-800/60 bg-gradient-to-b from-brand-900 to-brand-800 text-brand-50 shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset] transition-[width] duration-200 ease-out md:sticky md:top-0 md:flex overflow-hidden" data-sidebar="1" data-collapsed="0">
                 <div class="pointer-events-none absolute inset-0 opacity-[0.08] app-grid"></div>
 
                 <div class="relative flex h-full flex-col">
-                    <div class="sidebar__brand p-6">
+                    <div class="sidebar__brand relative p-6">
                         <div class="sidebar__brand-row flex items-center justify-between gap-3">
                             <a href="{{ route('admin.dashboard') }}" class="group flex min-w-0 items-center gap-3">
                                 <span class="grid h-10 w-10 place-items-center rounded-2xl bg-sun-500 font-extrabold text-brand-900 shadow-sm transition group-hover:scale-[1.02]">SS</span>
@@ -225,6 +225,24 @@
                                     <span class="grid h-9 w-9 place-items-center rounded-2xl bg-brand-700 font-extrabold text-white">SS</span>
                                     <span class="text-sm font-semibold tracking-tight">{{ config('app.name', 'Sisfarma') }}</span>
                                 </a>
+                            </div>
+                            <div class="hidden items-center gap-2 md:flex" data-sidebar-launcher="1" hidden>
+                                <a href="{{ route('admin.dashboard') }}" class="grid h-10 w-10 place-items-center rounded-2xl bg-sun-500 font-extrabold text-brand-900 shadow-sm ring-1 ring-white/30">
+                                    SS
+                                </a>
+                                <button
+                                    class="grid h-10 w-10 place-items-center rounded-2xl border border-slate-200 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-100"
+                                    type="button"
+                                    data-sidebar-toggle="1"
+                                    aria-label="Expandir menu"
+                                    aria-expanded="false"
+                                >
+                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M4 6h12" />
+                                        <path d="M4 10h12" />
+                                        <path d="M4 14h12" />
+                                    </svg>
+                                </button>
                             </div>
                             <div class="hidden md:block">
                                 <p class="truncate text-xs font-semibold uppercase tracking-widest text-slate-500">@yield('subtitle', 'Painel administrativo')</p>
