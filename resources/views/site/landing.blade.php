@@ -8,13 +8,20 @@
         /** @var bool $hasUsers */
         $hasUsers = isset($hasUsers) ? (bool) $hasUsers : \App\Models\User::query()->exists();
 
-        $primaryHref = $hasUsers ? route('admin.login') : route('admin.register');
-        $primaryLabel = $hasUsers ? 'Entrar no painel' : 'Criar primeiro acesso';
+        $isAuthenticated = isset($isAuthenticated) ? (bool) $isAuthenticated : auth()->check();
+
+        if ($isAuthenticated) {
+            $primaryHref = route('admin.dashboard');
+            $primaryLabel = 'Ir para o painel';
+        } else {
+            $primaryHref = $hasUsers ? route('admin.login') : route('admin.register');
+            $primaryLabel = $hasUsers ? 'Entrar no painel' : 'Criar primeiro acesso';
+        }
     @endphp
 
     <header class="sticky top-0 z-20 border-b border-slate-200/70 bg-white/75 backdrop-blur">
         <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
-            <a class="flex items-center gap-3" href="{{ route('site.landing') }}">
+            <a class="flex items-center gap-3" href="{{ route('home') }}">
                 <span class="grid h-10 w-10 place-items-center rounded-2xl bg-brand-700 font-extrabold text-white shadow-sm">
                     SS
                 </span>
@@ -32,8 +39,8 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <a class="hidden items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm hover:bg-slate-50 md:inline-flex" href="{{ route('admin.login') }}">
-                    Admin
+                <a class="hidden items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm hover:bg-slate-50 md:inline-flex" href="{{ $isAuthenticated ? route('admin.dashboard') : route('admin.login') }}">
+                    {{ $isAuthenticated ? 'Painel' : 'Admin' }}
                 </a>
                 <a class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-4 py-2 text-sm font-extrabold text-white shadow-sm hover:bg-brand-800" href="{{ $primaryHref }}">
                     {{ $primaryLabel }}
@@ -141,7 +148,7 @@
                     <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Recursos principais</h2>
                     <p class="mt-2 max-w-2xl text-sm text-slate-600">Módulos pensados para o fluxo real de uma farmácia.</p>
                 </div>
-                <a class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-extrabold text-slate-800 shadow-sm hover:bg-slate-50" href="{{ route('admin.login') }}">
+                <a class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-extrabold text-slate-800 shadow-sm hover:bg-slate-50" href="{{ $isAuthenticated ? route('admin.dashboard') : route('admin.login') }}">
                     Acessar painel
                 </a>
             </div>
@@ -307,7 +314,7 @@
                 <div class="mt-1 text-sm text-slate-600">Sistema interno para farmácias.</div>
             </div>
             <div class="flex flex-wrap items-center gap-3">
-                <a class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-extrabold text-slate-800 shadow-sm hover:bg-slate-50" href="{{ route('admin.login') }}">Login</a>
+                <a class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-extrabold text-slate-800 shadow-sm hover:bg-slate-50" href="{{ $isAuthenticated ? route('admin.dashboard') : route('admin.login') }}">{{ $isAuthenticated ? 'Painel' : 'Login' }}</a>
                 <a class="rounded-xl bg-brand-700 px-4 py-2 text-sm font-extrabold text-white shadow-sm hover:bg-brand-800" href="{{ $primaryHref }}">{{ $primaryLabel }}</a>
             </div>
         </div>

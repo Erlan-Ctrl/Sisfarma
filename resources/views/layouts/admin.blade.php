@@ -135,17 +135,17 @@
         @endphp
 
         <div class="relative flex min-h-screen">
-            <aside class="sidebar relative hidden h-screen w-72 shrink-0 flex-col border-r border-brand-800/60 bg-gradient-to-b from-brand-900 to-brand-800 text-brand-50 shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset] transition-[width] duration-200 ease-out md:sticky md:top-0 md:flex overflow-hidden" data-sidebar="1" data-collapsed="0">
+            <aside class="sidebar relative hidden h-screen w-72 shrink-0 flex-col border-r border-brand-800/60 bg-gradient-to-b from-brand-900 to-brand-800 text-brand-50 shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset] transition-[width] duration-200 ease-out md:sticky md:top-0 md:flex overflow-visible" data-sidebar="1" data-collapsed="0">
                 <div class="pointer-events-none absolute inset-0 opacity-[0.08] app-grid"></div>
 
                 <div class="relative flex h-full flex-col">
                     <div class="sidebar__brand p-6">
-                        <div class="flex items-center justify-between gap-3">
+                        <div class="sidebar__brand-row flex items-center justify-between gap-3">
                             <a href="{{ route('admin.dashboard') }}" class="group flex min-w-0 items-center gap-3">
                                 <span class="grid h-10 w-10 place-items-center rounded-2xl bg-sun-500 font-extrabold text-brand-900 shadow-sm transition group-hover:scale-[1.02]">SS</span>
                                 <div class="sidebar__brand-meta min-w-0">
                                     <p class="truncate text-sm font-semibold tracking-tight text-white">{{ config('app.name', 'Sisfarma') }}</p>
-                                    <p class="truncate text-xs text-brand-100/80">Painel interno</p>
+                                        <p class="truncate text-xs text-brand-100/80">Painel interno</p>
                                 </div>
                             </a>
 

@@ -36,12 +36,9 @@ use Illuminate\Support\Facades\Route;
 
 // Home: em ambiente interno, leva ao login (ou painel se já estiver autenticado).
 Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('admin.dashboard');
-    }
-
     return view('site.landing', [
         'hasUsers' => User::query()->exists(),
+        'isAuthenticated' => auth()->check(),
     ]);
 })->name('home');
 
@@ -49,6 +46,7 @@ Route::get('/', function () {
 Route::get('/apresentacao', function () {
     return view('site.landing', [
         'hasUsers' => User::query()->exists(),
+        'isAuthenticated' => auth()->check(),
     ]);
 })->name('site.landing');
 
